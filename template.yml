@@ -20,6 +20,30 @@ Globals:
     AutoPublishAlias: live
 
 Resources:
+  S3WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: picminder.aleonard.dev
+      WebsiteConfiguration:
+        IndexDocument: index.html
+      Tags:
+        - Key: Project
+          Value: PicMinder
+  S3WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3WebsiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource: arn:aws:s3:::picminder.aleonard.dev/*
+            Principal: "*"
+              #AWS: "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E2E9MMJ8F9AJOK"
+    DependsOn: S3WebsiteBucket
+
   GetHelloWorld:
     Type: AWS::Serverless::Function
     Properties:
