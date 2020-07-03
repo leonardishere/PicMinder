@@ -21,8 +21,8 @@ phases:
       - sed -i -e "s|assets/|$WEBSITE_S3_PREFIX/public/assets/|g" public/index.html
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template template-export.yml
       # Use AWS CLI to copy the application to the bucket
-      #- aws s3 rm s3://picminder.aleonard.dev --include "*" --recursive
-      #- aws s3 cp --recursive public/ s3://picminder.aleonard.dev/
+      - aws s3 rm s3://picminder.aleonard.dev --include "*" --recursive
+      - aws s3 cp --recursive public/ s3://picminder.aleonard.dev/
   post_build:
     commands:
 
