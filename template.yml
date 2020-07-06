@@ -48,9 +48,6 @@ Resources:
             Resource: arn:aws:s3:::picminder.aleonard.dev/*
             Principal:
               AWS: !Join ["", ["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ", !Ref OriginIdentity] ]
-      Tags:
-        - Key: Project
-          Value: PicMinder
     DependsOn: OriginIdentity
   WebsiteDistribution:
     Type: AWS::CloudFront::Distribution
