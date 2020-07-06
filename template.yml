@@ -76,6 +76,8 @@ Resources:
           TargetOriginId: S3WebsiteBucket
           ForwardedValues:
             QueryString: false
+          MinTTL: 60 # TODO: remove this after development is done
+          DefaultTTL: 60 # TODO: remove this after development is done
           MaxTTL: 60 # TODO: remove this after development is done
         PriceClass: PriceClass_100
         ViewerCertificate:
