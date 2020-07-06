@@ -34,10 +34,10 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: "This shouldnt be required"
+      Tags:
+        - Key: Project
+          Value: PicMinder
     DependsOn: S3WebsiteBucket
-    Tags:
-      - Key: Project
-        Value: PicMinder
   S3WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -51,10 +51,10 @@ Resources:
             Resource: arn:aws:s3:::picminder.aleonard.dev/*
             Principal:
               AWS: !Join ["", ["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ", !Ref OriginIdentity] ]
+      Tags:
+        - Key: Project
+          Value: PicMinder
     DependsOn: OriginIdentity
-    Tags:
-      - Key: Project
-        Value: PicMinder
   WebsiteDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -90,10 +90,10 @@ Resources:
           SslSupportMethod: sni-only
         HttpVersion: http2
         IPV6Enabled: true
+      Tags:
+        - Key: Project
+          Value: PicMinder
     DependsOn: S3WebsiteBucketPolicy
-    Tags:
-      - Key: Project
-        Value: PicMinder
 
   GetHelloWorld:
     Type: AWS::Serverless::Function
