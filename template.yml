@@ -41,8 +41,46 @@ Resources:
             Effect: "Allow"
             Resource: arn:aws:s3:::picminder.aleonard.dev/*
             Principal: "*"
-              #AWS: "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E2E9MMJ8F9AJOK"
+              #AWS: "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity 8785MUVPH16UKQ"
     DependsOn: S3WebsiteBucket
+  WebsiteDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - Id: S3WebsiteBucket
+            DomainName: picminder.aleonard.dev.s3.amazonaws.com
+            S3OriginConfig:
+              OriginAccessIdentity: origin-access-identity/cloudfront/8785MUVPH16UKQ # Randomly generated string?
+        Enabled: 'true'
+        DefaultRootObject: index.html
+        Aliases:
+          - picminder.aleonard.dev
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          Compress: true
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: S3WebsiteBucket
+          ForwardedValues:
+            QueryString: false
+          MaxTTL: 60 # TODO: remove this after development is done
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:917159232232:certificate/408296a8-d7c1-494a-b9ff-abe529616322
+          MinimumProtocolVersion: TLSv1.2_2018
+          SslSupportMethod: sni-only
+        HttpVersion: http2
+        IPV6Enabled: true
+      Tags:
+        - Key: Project
+          Value: PicMinder
 
   GetHelloWorld:
     Type: AWS::Serverless::Function
