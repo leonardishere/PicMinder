@@ -34,9 +34,6 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: "This shouldnt be required"
-      Tags:
-        - Key: Project
-          Value: PicMinder
     DependsOn: S3WebsiteBucket
   S3WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
