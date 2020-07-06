@@ -29,6 +29,15 @@ Resources:
       Tags:
         - Key: Project
           Value: PicMinder
+  OriginIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: "This shouldnt be required"
+    DependsOn: S3WebsiteBucket
+    Tags:
+      - Key: Project
+        Value: PicMinder
   S3WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -40,9 +49,12 @@ Resources:
               - "s3:GetObject"
             Effect: "Allow"
             Resource: arn:aws:s3:::picminder.aleonard.dev/*
-            Principal: "*"
-              #AWS: "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity 8785MUVPH16UKQ"
-    DependsOn: S3WebsiteBucket
+            Principal:
+              AWS: !Join ["", "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ", !Ref OriginIdentity]
+    DependsOn: OriginIdentity
+    Tags:
+      - Key: Project
+        Value: PicMinder
   WebsiteDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -51,7 +63,7 @@ Resources:
           - Id: S3WebsiteBucket
             DomainName: picminder.aleonard.dev.s3.amazonaws.com
             S3OriginConfig:
-              OriginAccessIdentity: origin-access-identity/cloudfront/8785MUVPH16UKQ # Randomly generated string?
+              OriginAccessIdentity: !Join ["", "origin-access-identity/cloudfront/", !Ref OriginIdentity]
         Enabled: 'true'
         DefaultRootObject: index.html
         Aliases:
@@ -78,6 +90,7 @@ Resources:
           SslSupportMethod: sni-only
         HttpVersion: http2
         IPV6Enabled: true
+      DependsOn: S3WebsiteBucketPolicy
       Tags:
         - Key: Project
           Value: PicMinder
