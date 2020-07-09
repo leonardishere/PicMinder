@@ -155,7 +155,6 @@ Resources:
             Path: /
             Method: options
             RestApiId: !Ref API
-    DependsOn: API
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
