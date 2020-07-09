@@ -202,4 +202,17 @@ Resources:
       ManagedPolicyArns:
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - arn:aws:iam::917159232232:policy/XRayPutTraceSegments
+      Policies:
+        -
+          PolicyName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}-inline-policy'
+          PolicyDocument: {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Action": "s3:*",
+                      "Resource": !Join ['', [!GetAtt [PictureBucket, Arn], '/*'] ]
+                  }
+              ]
+          }
   # end backend
