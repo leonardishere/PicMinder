@@ -25,6 +25,7 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  # begin frontend
   S3WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -81,9 +82,9 @@ Resources:
           TargetOriginId: S3WebsiteBucket
           ForwardedValues:
             QueryString: false
-          MinTTL: 60 # TODO: remove this after development is done
-          DefaultTTL: 60 # TODO: remove this after development is done
-          MaxTTL: 60 # TODO: remove this after development is done
+          MinTTL: 60 # TODO: set to more reasonable value after development
+          DefaultTTL: 60 # TODO: set to more reasonable value after development
+          MaxTTL: 60 # TODO: set to more reasonable value after development
         PriceClass: PriceClass_100
         ViewerCertificate:
           AcmCertificateArn: arn:aws:acm:us-east-1:917159232232:certificate/408296a8-d7c1-494a-b9ff-abe529616322
@@ -123,7 +124,8 @@ Resources:
       Name: picminder.aleonard.dev.
       Type: AAAA
     DependsOn: WebsiteDistribution
-
+  # end frontend
+  # begin backend
   API:
     Type: AWS::Serverless::Api
     Properties:
@@ -135,6 +137,24 @@ Resources:
           HostedZoneId: Z21QA4NBX4IRX8
       StageName: prod
       TracingEnabled: true
+  OptionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PicMinderOptions
+      Handler: api/options.handler
+      Runtime: python3.7
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: options
+            RestApiId: !Ref RestApi
 
   GetHelloWorld:
     Type: AWS::Serverless::Function
