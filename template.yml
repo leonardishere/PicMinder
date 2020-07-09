@@ -172,6 +172,21 @@ Resources:
       Tags:
         - Key: Project
           Value: PicMinder
+  PictureBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref PictureBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "s3:GetObject"
+              - "s3:PutObject"
+              - "s3:DeleteObject"
+            Effect: "Allow"
+            Resource: arn:aws:s3:::picminder.aleonard.dev.pictures/*
+            Principal: "*" # TODO: change to lambda arn
+    DependsOn: PictureBucket
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
