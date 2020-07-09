@@ -18,6 +18,11 @@ Parameters:
 Globals:
   Function:
     AutoPublishAlias: live
+  Api:
+    Cors:
+      AllowMethods: "'OPTIONS,GET'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
 
 Resources:
   S3WebsiteBucket:
@@ -118,6 +123,18 @@ Resources:
       Name: picminder.aleonard.dev.
       Type: AAAA
     DependsOn: WebsiteDistribution
+
+  API:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: PicminderApi
+      Domain:
+        DomainName: picminder-api.aleonard.dev
+        CertificateArn: arn:aws:acm:us-west-2:917159232232:certificate/ba2d0a69-0de2-44ff-b3bd-e3acef4c9122
+        Route53:
+          HostedZoneId: Z21QA4NBX4IRX8
+      StageName: prod
+      TracingEnabled: true
 
   GetHelloWorld:
     Type: AWS::Serverless::Function
