@@ -155,6 +155,23 @@ Resources:
             Path: /
             Method: options
             RestApiId: !Ref API
+  PictureBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: picminder.aleonard.dev.pictures
+      CorsConfiguration:
+        CorsRules:
+          -
+            AllowedMethods:
+              - HEAD
+              - GET
+              - PUT
+              - DELETE
+            AllowedOrigins:
+              - 'https://picminder.aleonard.dev'
+      Tags:
+        - Key: Project
+          Value: PicMinder
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
