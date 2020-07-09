@@ -154,24 +154,8 @@ Resources:
           Properties:
             Path: /
             Method: options
-            RestApiId: !Ref RestApi
-
-  GetHelloWorld:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'awscodestar-${ProjectId}-lambda-GetHelloWorld'
-      Handler: index.get
-      Runtime: nodejs12.x
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /
-            Method: get
+            RestApiId: !Ref API
+    DependsOn: API
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
