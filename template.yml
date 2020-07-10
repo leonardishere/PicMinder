@@ -18,6 +18,10 @@ Parameters:
 Globals:
   Function:
     AutoPublishAlias: live
+    Tracing: Active
+    Environment:
+      Variables:
+        PICTURE_BUCKET: !Ref PictureBucket
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
@@ -154,6 +158,24 @@ Resources:
           Properties:
             Path: /
             Method: options
+            RestApiId: !Ref API
+  GetUploadUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PicMinderGetUploadUrl
+      Handler: api/get_upload_url.handler
+      Runtime: python3.7
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /get_upload_url/
+            Method: get
             RestApiId: !Ref API
   PictureBucket:
     Type: AWS::S3::Bucket
