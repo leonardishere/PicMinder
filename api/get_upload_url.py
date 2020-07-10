@@ -33,6 +33,11 @@ def handler(event, context):
     # Return the presigned URL
     return {
         'statusCode': 200,
+        'headers': {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "OPTIONS,GET"
+        },
         'body': json.dumps({
             'key': key,
             'put_url': presigned_put_url,
