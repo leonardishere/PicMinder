@@ -39,6 +39,7 @@ def handler(event, context):
             "Access-Control-Allow-Methods": "OPTIONS,GET"
         },
         'body': json.dumps({
+            'bucket': PICTURE_BUCKET,
             'key': key,
             'put_url': presigned_put_url,
             'get_url': presigned_get_url

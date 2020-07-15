@@ -1,7 +1,8 @@
 import React, {useCallback, useState} from 'react'
 import {useDropzone} from 'react-dropzone'
 import './App.css'
-var JSZip = require("jszip");
+const JSZip = require('jszip')
+const axios = require('axios')
 
 const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png']
 
@@ -20,9 +21,7 @@ class MyFile {
         this.status = 'failed'
       }
       reader.onload = () => {
-        console.log('received buffer')
         const binaryStr = reader.result
-        console.log(binaryStr)
         this.binaryStr = binaryStr
         this.status = 'loaded'
       }
@@ -36,9 +35,7 @@ class MyFile {
 function FileList(files) {
   return (
     <div className="filelist">
-      {
-        files.files.map((file,i) => FileListItem(file, i))
-      }
+      { files.files.map((file,i) => FileListItem(file, i)) }
     </div>
   )
 }
@@ -53,23 +50,40 @@ function App() {
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles = acceptedFiles.map(file => new MyFile(file))
     setFiles(files.concat(acceptedFiles))
-    acceptedFiles.forEach((file) => {
-      console.log(file)
-    })
   }, [files, setFiles])
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 
   const uploadFiles = () => {
-    console.log(files)
+    // zip files
     var zip = new JSZip()
     files.forEach(file => {
       if(file.status === 'loaded'){
         zip.file(file.file.name, file.binaryStr)
       }
     })
+    var zipfile_, get_res_;
     zip.generateAsync({type:'blob'})
-    .then(content => {
-      console.log(content)
+    .then(zipfile => {
+      zipfile_ = zipfile
+      // get an upload url
+      return axios.get('https://picminder-api.aleonard.dev/get_upload_url/')
+    })
+    .then(get_res => {
+      get_res_ = get_res
+      var put_url = get_res['data']['put_url']
+      // upload zip file
+      return axios.put(put_url, zipfile_, {'headers': {'Content-Type':''} })
+    })
+    .then(put_res => {
+      if(put_res['status'] === 200){
+        console.log('Successfully uploaded as ' + get_res_['data']['key'])
+      }else{
+        console.error('Upload Error')
+        console.error(put_res)
+      }
+    })
+    .catch(err => {
+      console.error(err)
     })
   }
 
