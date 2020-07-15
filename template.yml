@@ -191,6 +191,8 @@ Resources:
               - DELETE
             AllowedOrigins:
               - 'https://picminder.aleonard.dev'
+            AllowedHeaders:
+              - '*'
       Tags:
         - Key: Project
           Value: PicMinder
