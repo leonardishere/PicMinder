@@ -191,7 +191,7 @@ Resources:
         Fn::GetAtt:
           - LambdaExecutionRole
           - Arn
-      Events: !Ref S3Event
+      Events: S3Event
   S3Event:
     Type: S3
     Properties:
