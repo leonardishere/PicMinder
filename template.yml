@@ -201,7 +201,7 @@ Resources:
           Properties:
             Bucket: !Ref PictureBucket # creates circular dependency
             #Bucket: picminder.aleonard.dev.pictures
-            Bucket:
+            #Bucket:
               #Ref: PictureBucket
               #Ref: picminder.aleonard.dev.pictures
             Events: s3:ObjectCreated:*
