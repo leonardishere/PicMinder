@@ -148,6 +148,7 @@ Resources:
       Handler: api/options.handler
       Runtime: python3.7
       MemorySize: 128
+      Timeout: 3
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole
@@ -166,6 +167,7 @@ Resources:
       Handler: api/get_upload_url.handler
       Runtime: python3.7
       MemorySize: 128
+      Timeout: 3
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole
@@ -177,6 +179,28 @@ Resources:
             Path: /get_upload_url/
             Method: get
             RestApiId: !Ref API
+  ProcessUploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PicMinderProcessUpload
+      Handler: api/process_upload.handler
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 60
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        S3Event:
+          Type: S3
+          Bucket: !Ref PictureBucket
+          Events: s3:ObjectCreated:*
+          Filter:
+            S3Key:
+              Rules:
+              - Name: prefix
+                Value: input_
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
