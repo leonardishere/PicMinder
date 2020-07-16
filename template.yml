@@ -191,17 +191,6 @@ Resources:
         Fn::GetAtt:
           - LambdaExecutionRole
           - Arn
-      Events:
-        S3Event:
-          Type: S3
-          Properties:
-            Bucket: !Ref PictureBucket
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                - Name: prefix
-                  Value: input_
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
