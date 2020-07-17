@@ -19,9 +19,9 @@ Globals:
   Function:
     AutoPublishAlias: live
     Tracing: Active
-    #Environment:
-    #  Variables:
-    #    PICTURE_BUCKET: !Ref PictureBucket
+    Environment:
+      Variables:
+        PICTURE_BUCKET: !Ref PictureBucket
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
@@ -191,21 +191,21 @@ Resources:
         Fn::GetAtt:
           - LambdaExecutionRole
           - Arn
-      Events:
-        S3Event:
-          Type: S3
-          Properties:
-            Bucket: !Ref PictureBucket # creates circular dependency
-            #Bucket: picminder.aleonard.dev.pictures
-            #Bucket:
-              #Ref: PictureBucket
-              #Ref: picminder.aleonard.dev.pictures
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                - Name: prefix
-                  Value: input_
+      #Events:
+      #  S3Event:
+      #    Type: S3
+      #    Properties:
+      #      Bucket: !Ref PictureBucket # creates circular dependency
+      #      #Bucket: picminder.aleonard.dev.pictures
+      #      #Bucket:
+      #        #Ref: PictureBucket
+      #        #Ref: picminder.aleonard.dev.pictures
+      #      Events: s3:ObjectCreated:*
+      #      Filter:
+      #        S3Key:
+      #          Rules:
+      #          - Name: prefix
+      #            Value: input_
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
