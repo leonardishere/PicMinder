@@ -19,9 +19,9 @@ Globals:
   Function:
     AutoPublishAlias: live
     Tracing: Active
-    Environment:
-      Variables:
-        PICTURE_BUCKET: !Ref PictureBucket
+    #Environment:
+    #  Variables:
+    #    PICTURE_BUCKET: !Ref PictureBucket
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
@@ -43,7 +43,7 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: "This shouldnt be required"
+        Comment: "This comment is extraneous"
     DependsOn: S3WebsiteBucket
   S3WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
