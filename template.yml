@@ -19,9 +19,9 @@ Globals:
   Function:
     AutoPublishAlias: live
     Tracing: Active
-    Environment:
-      Variables:
-        PICTURE_BUCKET: !Ref PictureBucket
+    #Environment:
+    #  Variables:
+    #    PICTURE_BUCKET: !Ref PictureBucket
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
