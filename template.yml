@@ -206,28 +206,6 @@ Resources:
       #          Rules:
       #          - Name: prefix
       #            Value: input_
-  Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub "cderror-${AWS::AccountId}"
-  Function:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: api/process_upload.handler
-      Runtime: python3.7
-      Policies:
-        - Version: 2012-10-17
-          Statement:
-            - Effect: Allow
-              Action: s3:GetObject*
-              Resource: !Sub "arn:aws:s3:::cderror-${AWS::AccountId}/*"
-      Events:
-        Upload:
-          Properties:
-            Bucket:
-              Ref: Bucket
-            Events: s3:ObjectCreated:*
-          Type: S3
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -241,7 +219,7 @@ Resources:
               - PUT
               - DELETE
             AllowedOrigins:
-              - 'https://picminder.aleonard.dev'
+              - '*'
             AllowedHeaders:
               - '*'
       Tags:
