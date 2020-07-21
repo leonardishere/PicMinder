@@ -23,8 +23,9 @@ Globals:
       Variables:
         PICTURE_BUCKET: picminder.aleonard.dev.pictures
     DeadLetterQueue:
-      Type: SNS
-      TargetARN: arn:aws:sns:us-west-2:917159232232:DeadLetterTopic
+      DeadLetterQueue:
+        Type: SNS
+        TargetARN: arn:aws:sns:us-west-2:917159232232:DeadLetterTopic
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
