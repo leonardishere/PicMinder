@@ -19,9 +19,9 @@ Globals:
   Function:
     AutoPublishAlias: live
     Tracing: Active
-    #Environment:
-    #  Variables:
-    #    PICTURE_BUCKET: !Ref PictureBucket
+    Environment:
+      Variables:
+        PICTURE_BUCKET: picminder.aleonard.dev.pictures
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
@@ -196,16 +196,25 @@ Resources:
           Type: S3
           Properties:
             Bucket: !Ref PictureBucket # creates circular dependency
-            #Bucket: picminder.aleonard.dev.pictures
-            #Bucket:
-              #Ref: PictureBucket
-              #Ref: picminder.aleonard.dev.pictures
             Events: s3:ObjectCreated:*
             Filter:
               S3Key:
                 Rules:
                 - Name: prefix
                   Value: input_
+  ProcessUploadFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: PicMinderProcessUpload
+      Handler: api/process_upload.handler
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 60
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -264,7 +273,7 @@ Resources:
                   {
                       "Effect": "Allow",
                       "Action": "s3:*",
-                      "Resource": !Join ['', [!GetAtt [PictureBucket, Arn], '/*'] ]
+                      "Resource": "picminder.aleonard.dev.pictures/*"
                   }
               ]
           }
