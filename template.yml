@@ -22,10 +22,6 @@ Globals:
     Environment:
       Variables:
         PICTURE_BUCKET: picminder.aleonard.dev.pictures
-    DeadLetterQueue:
-      DeadLetterQueue:
-        Type: SNS
-        TargetARN: arn:aws:sns:us-west-2:917159232232:DeadLetterTopic
   Api:
     Cors:
       AllowMethods: "'OPTIONS,GET'"
@@ -206,6 +202,9 @@ Resources:
                 Rules:
                 - Name: prefix
                   Value: input_
+      DeadLetterQueue:
+        Type: SNS
+        TargetARN: arn:aws:sns:us-west-2:917159232232:DeadLetterTopic
   ProcessUploadFunction:
     Type: AWS::Lambda::Function
     Properties:
