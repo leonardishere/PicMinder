@@ -44,13 +44,13 @@ def handler(event, context):
             'body': 'Error getting bucket and key from event'
         }
     try:
-        response = s3.get_object(Bucket=bucket, Key=key)
-        print("CONTENT TYPE: " + response['ContentType'])
-        #return response['ContentType']
+        s3_object = s3.get_object(Bucket=bucket, Key=key)
+        new_key = 'output_{}'.format(key) # TODO: 'output_{}'.format(key.split('_'[1]))
+        s3.put_object(Body=s3_object, Bucket=PICTURE_BUCKET, Key='test_event')
         return {
             'statusCode': 200,
             'headers': headers,
-            'body': json.dumps({'ContentType': response['ContentType']})
+            'body': json.dumps({'NewKey': new_key})
         }
     except Exception as e:
         print(e)
