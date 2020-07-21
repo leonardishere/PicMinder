@@ -21,8 +21,8 @@ def handler(event, context):
 
     s3_object = s3.get_object(Bucket=bucket, Key=key)
     new_key = 'output_{}'.format(key) # TODO: 'output_{}'.format(key.split('_'[1]))
-    #s3.upload_fileobj(json.dumps(event, indent=2), PICTURE_BUCKET, 'test_event')
-    s3.put_object(Body=s3_object, Bucket=PICTURE_BUCKET, Key='test_event')
+    s3.upload_fileobj(s3_object, bucket, new_key)
+    #s3.put_object(Body=s3_object, Bucket=bucket, Key=new_key)
     return {
         'statusCode': 200,
         'headers': headers,
