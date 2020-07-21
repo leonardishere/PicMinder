@@ -273,7 +273,7 @@ Resources:
                   {
                       "Effect": "Allow",
                       "Action": "s3:*",
-                      "Resource": "picminder.aleonard.dev.pictures/*"
+                      "Resource": "arn:aws:s3:::picminder.aleonard.dev.pictures/*"
                   }
               ]
           }
