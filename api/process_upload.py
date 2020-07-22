@@ -17,20 +17,20 @@ def handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
     input_key = event['Records'][0]['s3']['object']['key']
     key = input_key.split('_')[1]
-    inter_key = 'inter_{}'.format(key)
+    inter_key = '/tmp/{}'.format(key)
     output_key = 'output_{}'.format(key)
     # Get the object from s3
     s3_object = s3.get_object(Bucket=bucket, Key=input_key)
     # Read the object
     contents = s3_object['Body'].read()
     # I don't want to do it this way, but for now do operations on disk
-    filename = key #'/tmp/'+key
+    filename = '/tmp/'+key
     with open(filename, 'wb') as f:
         f.write(contents)
     # Process the object
     with ZipFile(filename, 'r') as zipobj:
         zipobj.extractall(inter_key)
-    with ZipFile('output.zip', 'w') as zipobj:
+    with ZipFile('/tmp/output.zip', 'w') as zipobj:
         os.chdir(inter_key)
         for fp in os.listdir():
             Image.open(fp).reduce(2).save(fp)
@@ -38,7 +38,7 @@ def handler(event, context):
             os.remove(fp) # optionally delete the file to save disk space
         os.chdir('..')
     # Upload the processed object
-    with open('output.zip', 'rb') as f:
+    with open('/tmp/output.zip', 'rb') as f:
         s3.upload_fileobj(f, bucket, output_key)
     #s3.upload_fileobj(key, bucket, new_key)
     #s3.upload_fileobj(s3_object, bucket, new_key)
