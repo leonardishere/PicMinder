@@ -188,8 +188,8 @@ Resources:
       FunctionName: PicMinderProcessUpload
       Handler: api/process_upload.handler
       Runtime: python3.7
-      MemorySize: 128
-      Timeout: 60
+      MemorySize: 512
+      Timeout: 120
       Layers:
         - !Ref Libs
       Role:
