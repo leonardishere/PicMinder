@@ -190,6 +190,8 @@ Resources:
       Runtime: python3.7
       MemorySize: 128
       Timeout: 60
+      Layers:
+        - !Ref Libs
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole
@@ -205,6 +207,14 @@ Resources:
                 Rules:
                 - Name: prefix
                   Value: input_
+  Libs:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: PythonPilLayer
+      Description: PIL dependency for ProcessUploadFunction
+      ContentUri: api/pillow.zip
+      CompatibleRuntimes:
+        - python3.7
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
