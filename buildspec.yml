@@ -10,6 +10,8 @@ phases:
 
       # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
+      # Install PIL
+      - pip install Pillow
   pre_build:
     commands:
       # Discover and run unit tests in the 'tests' directory
