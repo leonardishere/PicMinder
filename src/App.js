@@ -69,6 +69,7 @@ function App() {
       return axios.get('https://picminder-api.aleonard.dev/get_upload_url/')
     })
     .then(get_res => {
+      console.log(get_res)
       get_res_ = get_res
       var put_url = get_res['data']['put_url']
       // upload zip file

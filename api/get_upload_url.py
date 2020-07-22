@@ -1,5 +1,5 @@
 import json
-import uuid
+from random import randrange
 import boto3
 import os
 
@@ -9,24 +9,32 @@ PICTURE_BUCKET = os.environ['PICTURE_BUCKET']
 
 def handler(event, context):
     # Generate a random S3 key name
-    key = uuid.uuid4().hex
-    put_key = 'input_{}'.format(key)
-    get_key = 'input_{}'.format(key) # todo: should be output_
+    key = str(randrange(999999)).zfill(6)
+    input_key = 'input_{}'.format(key)
+    output_key = 'output_{}'.format(key)
 
     # Generate the presigned URL for put requests
     presigned_put_url = s3.generate_presigned_url(
         ClientMethod='put_object',
         Params={
             'Bucket': PICTURE_BUCKET,
-            'Key': put_key
+            'Key': input_key
         }
     )
 
-    presigned_get_url = s3.generate_presigned_url(
+    presigned_get_input_url = s3.generate_presigned_url(
         ClientMethod='get_object',
         Params={
             'Bucket': PICTURE_BUCKET,
-            'Key': get_key
+            'Key': input_key
+        }
+    )
+
+    presigned_get_output_url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket': PICTURE_BUCKET,
+            'Key': output_key
         }
     )
 
@@ -42,6 +50,7 @@ def handler(event, context):
             'bucket': PICTURE_BUCKET,
             'key': key,
             'put_url': presigned_put_url,
-            'get_url': presigned_get_url
+            'get_input_url': presigned_get_input_url,
+            'get_output_url': presigned_get_output_url
         })
     }
