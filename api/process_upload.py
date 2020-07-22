@@ -17,7 +17,7 @@ def handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
     input_key = event['Records'][0]['s3']['object']['key']
     key = input_key.split('_')[1]
-    inter_key = '/tmp/{}'.format(key)
+    inter_key = '/tmp/inter_{}'.format(key)
     output_key = 'output_{}'.format(key)
     # Get the object from s3
     s3_object = s3.get_object(Bucket=bucket, Key=input_key)
