@@ -215,6 +215,25 @@ Resources:
       ContentUri: api/pillow.zip
       CompatibleRuntimes:
         - python3.7
+  GetDownloadUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PicMinderGetDownloadUrl
+      Handler: api/get_download_url.handler
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 3
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /get_download_url/
+            Method: get
+            RestApiId: !Ref API
   PictureBucket:
     Type: AWS::S3::Bucket
     Properties:
