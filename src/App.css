@@ -4,10 +4,16 @@
   width: 100%;
 }
 
-div.dropzone {
+.dropzone {
   height: 400px;
   width: 100%;
   border: 3px solid black;
+  cursor: copy;
+}
+
+.dropzone>section, .dropzone>section>div {
+  width: 100%;
+  height: 100%;
 }
 
 button {
