@@ -35,9 +35,12 @@ def handler(event, context):
         for fp in os.listdir():
             try:
                 im = Image.open(fp)
-                if im.mode == 'P':
+                mode = im.mode
+                if mode == 'P':
                     im = im.convert('RGBA')
                 im = im.reduce(2)
+                if mode == 'P':
+                    im = im.convert('P')
                 im.save(fp)
                 zipobj.write(fp)
                 os.remove(fp) # optionally delete the file to save disk space
