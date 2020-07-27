@@ -33,16 +33,20 @@ def handler(event, context):
     with ZipFile('/tmp/output.zip', 'w') as zipobj:
         os.chdir(inter_key)
         for fp in os.listdir():
-            Image.open(fp).reduce(2).save(fp)
-            zipobj.write(fp)
-            os.remove(fp) # optionally delete the file to save disk space
+            try:
+                im = Image.open(fp)
+                if im.mode == 'P':
+                    im = im.convert('RGBA')
+                im = im.reduce(2)
+                im.save(fp)
+                zipobj.write(fp)
+                os.remove(fp) # optionally delete the file to save disk space
+            except Exception as e:
+                pass
         os.chdir('..')
     # Upload the processed object
     with open('/tmp/output.zip', 'rb') as f:
         s3.upload_fileobj(f, bucket, output_key)
-    #s3.upload_fileobj(key, bucket, new_key)
-    #s3.upload_fileobj(s3_object, bucket, new_key)
-    #s3.put_object(Body=contents, Bucket=bucket, Key=new_key)
     # HTTP response
     return {
         'statusCode': 200,
