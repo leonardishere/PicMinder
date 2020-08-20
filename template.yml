@@ -258,6 +258,11 @@ Resources:
               - '*'
             AllowedHeaders:
               - '*'
+      LifecycleConfiguration:
+        Rules:
+        - Id: DeletionRule
+          Status: Enabled
+          ExpirationInDays: '1'
       Tags:
         - Key: Project
           Value: PicMinder
