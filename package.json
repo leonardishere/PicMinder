@@ -8,7 +8,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "CI=true react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "react-scripts build && aws s3 rm s3://picminder.aleonard.dev --include \"*\" --recursive && aws s3 cp --recursive build/ s3://picminder.aleonard.dev/"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.0",
