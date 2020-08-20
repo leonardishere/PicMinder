@@ -46,7 +46,7 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: "This comment is extraneous"
+        Comment: "picminder.aleonard.dev origin"
     DependsOn: S3WebsiteBucket
   S3WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -238,6 +238,10 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: picminder.aleonard.dev.pictures
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
       CorsConfiguration:
         CorsRules:
           -
