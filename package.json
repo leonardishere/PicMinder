@@ -1,6 +1,6 @@
 {
-  "name": "hello-world",
-  "description": "Sample NodeJs web application",
+  "name": "PicMinder",
+  "description": "PicMinder, an easy to use web app for bulk image processing and sharing",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {},
