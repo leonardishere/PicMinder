@@ -2,8 +2,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 
-test('renders dropzone', () => {
+test('renders buttons', () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/Drag 'n' drop some files here, or click to select files/i);
-  expect(linkElement).toBeInTheDocument();
+  const buttonElement1 = getByText(/Select Files/i);
+  expect(buttonElement1).toBeInTheDocument();
+  const buttonElement2 = getByText(/Upload Files/i);
+  expect(buttonElement2).toBeInTheDocument();
 });
