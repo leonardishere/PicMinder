@@ -16,7 +16,7 @@ class DownloadApp extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App status">
         <p>Downloading jobid={this.state.jobid}</p>
         {
           this.state.get_url
