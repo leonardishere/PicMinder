@@ -93,9 +93,7 @@ Resources:
           TargetOriginId: S3WebsiteBucket
           ForwardedValues:
             QueryString: false
-          MinTTL: 60 # TODO: set to more reasonable value after development
-          DefaultTTL: 60 # TODO: set to more reasonable value after development
-          MaxTTL: 60 # TODO: set to more reasonable value after development
+          CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6"
         PriceClass: PriceClass_100
         ViewerCertificate:
           AcmCertificateArn: arn:aws:acm:us-east-1:917159232232:certificate/408296a8-d7c1-494a-b9ff-abe529616322

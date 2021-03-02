@@ -23,7 +23,7 @@ phases:
       - npm run build
       # Use AWS CLI to copy the application to the bucket
       - aws s3 rm s3://picminder.aleonard.dev --include "*" --recursive
-      - aws s3 cp --recursive build/ s3://picminder.aleonard.dev/
+      - aws s3 cp --recursive --cache-control="max-age=86400" build/ s3://picminder.aleonard.dev/
   post_build:
     commands:
 
